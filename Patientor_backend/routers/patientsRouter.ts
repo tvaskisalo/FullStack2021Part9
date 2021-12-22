@@ -9,10 +9,15 @@ router.get('/', (_req,res) => {
   res.send(patientsService.getPatients());
 });
 
+router.get('/:id', (req, res) => {
+  const id: string = req.params.id;
+  res.send(patientsService.getPatient(id));
+});
+
 router.post('/', (req,res) => {
   try {
-    const newPatientEntry = toNewPatientEntry(req.body);
-
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const newPatientEntry = toNewPatientEntry({...req.body, entries: []});
     const addedEntry = patientsService.addPatient(newPatientEntry);
     res.json(addedEntry);
   } catch (error: unknown) {
