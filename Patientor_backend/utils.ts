@@ -17,17 +17,24 @@ const isGender = (param: any): param is Gender => {
     return Object.values(Gender).includes(param);
 };
 
-const isEntries = (param: unknown): param is Array<Entry> => {
+const isEntries = (param: any): param is Array<Entry> => {
     let success = true;
     if (!(param instanceof Array)) {
-        success = false;
+       success = false;
+    }
+    if (param.length !== 0) {
+       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+       param.forEach((e: { type: Entry; }) => {
+           if (!e.type || typeof e.type !== 'string') {
+               success =false;
+           }
+           if (['Hospital','HealthCheck','OccupationalHealthcare'].includes(String(e.type))) {
+               success = false;
+           }
+       });
     }
 
-    if (success) {
-        return success;
-    } else {
-        return false;
-    }
+    return success;
 };
   
 const parseGender = (gender: unknown): Gender => {
