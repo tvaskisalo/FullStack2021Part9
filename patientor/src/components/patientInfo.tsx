@@ -1,18 +1,23 @@
 import axios from "axios";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Icon, Item } from "semantic-ui-react";
+import { Button, Icon, Item, Modal, Segment } from "semantic-ui-react";
 import { apiBaseUrl } from "../constants";
 import { addPrivatePatient, useStateValue } from "../state";
-import { Patient, Entry, Diagnosis} from "../types";
-
+import { Patient, Entry, Diagnosis, HospitalEntry} from "../types";
+import HospitalEntryForm, { EntryFormValues } from "./entryFrom";
 
 
 const PatientInfo = () => {
     const [{ privatePatients, diagnoses }, dispatch] = useStateValue();
+
+    const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<string | undefined>();
+    
     const { id } = useParams<{ id: string }>();
     const pPatients = Object.values(privatePatients);
     const allDiagnoses = Object.values(diagnoses);
+
     React.useEffect(() => {
         const fetch = async () => {
           try {
@@ -35,6 +40,34 @@ const PatientInfo = () => {
         return <div></div>;
     }
 
+  
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  const submitNewEntry = async (values: EntryFormValues) => {
+    
+    try {
+      const { data: newEntry } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        values
+      );
+      
+      const  newPatient = {...patient, entries: patient.entries.concat(newEntry)};
+      dispatch(addPrivatePatient(newPatient));
+      closeModal();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      console.error(e.response?.data || 'Unknown Error');
+      setError(e.response?.data?.error || 'Unknown error');
+    }
+  };
+
+
     const parseDiagnoses = (diagnosisCodes?: string[]) => {
       if ( !diagnosisCodes || diagnosisCodes.length === 0) {
         return <div></div>;
@@ -55,10 +88,19 @@ const PatientInfo = () => {
       </div>;
     };
 
-    const parseHospital = (entry: Entry) => {
+    const parseHospital = (entry: HospitalEntry) => {
+      if (entry.discharge) {
+        return <div>
+          <h3><Icon name='hospital' size='big' />{entry.date}</h3>
+          {entry.description} {parseDiagnoses(entry.diagnosisCodes)}
+          <p>Discharge date: {entry.discharge.date}.</p> 
+          <p> Criteria: {entry.discharge.criteria}</p>
+        </div>;
+      }
       return <div>
         <h3><Icon name='hospital' size='big' />{entry.date}</h3>
         {entry.description} {parseDiagnoses(entry.diagnosisCodes)}
+
       </div>;
     };
 
@@ -97,7 +139,29 @@ const PatientInfo = () => {
       }
     };
     
+    interface Props {
+      modalOpen: boolean;
+      onClose: () => void;
+      onSubmit: (values: EntryFormValues) => void;
+      error?: string;
+    }
+    const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
+      <Modal open={modalOpen} onClose={onClose} centered={false} closeIcon>
+        <Modal.Header>Add a new entry</Modal.Header>
+        <Modal.Content>
+          {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
+          <HospitalEntryForm onSubmit={onSubmit} onCancel={onClose} />
+        </Modal.Content>
+      </Modal>
+    );
     return <div>
+    <AddEntryModal
+      modalOpen={modalOpen}
+      onSubmit={submitNewEntry}
+      error={error}
+      onClose={closeModal}
+    />
+    <Button onClick={() => openModal()}>Add New Entry</Button>
     {parseGender(patient)}
     <p>ssn: {patient.ssn}</p>
     <p>occupation: {patient.occupation}</p>

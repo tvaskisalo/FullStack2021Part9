@@ -14,6 +14,21 @@ router.get('/:id', (req, res) => {
   res.send(patientsService.getPatient(id));
 });
 
+router.post('/:id/entries', (req,res) => {
+  const id: string = req.params.id;
+  const entry = req.body;
+  if (!entry ) {
+    res.status(400);
+    res.end();
+  }
+  const returnValue = patientsService.addEntryToPatient(id, entry);
+  if (!returnValue) {
+    res.status(400);
+    res.end();
+  } 
+  res.send(returnValue);
+});
+
 router.post('/', (req,res) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

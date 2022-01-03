@@ -2,6 +2,7 @@ import patients from '../data/patients';
 import { Patient, NonSensitivePatient, NewPatient, Entry } from '../types';
 
 import * as uuid from 'uuid';
+import { parseEntry } from '../utils';
 
 
 const getPatients = (): Array<NonSensitivePatient> => {
@@ -26,8 +27,20 @@ const addPatient = (entry: NewPatient): NonSensitivePatient => {
   return patient;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const addEntryToPatient = (id: string, entry: any): Entry | undefined=> {
+  const parsedEntry = parseEntry(entry);
+  const patient = patients.find(p => p.id===id);
+  if (!patient || !parsedEntry) {
+    return undefined;
+  }
+  patient.entries = patient.entries.concat(parsedEntry);
+  return parsedEntry;
+};
+
 export default {
     getPatients,
     addPatient,
-    getPatient
+    getPatient,
+    addEntryToPatient
 };
