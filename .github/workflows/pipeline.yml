@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
+      - name: check dir
+        run: ls -a
       - name: change directory
         run: cd Patientor_backend
       - name: npm install 
