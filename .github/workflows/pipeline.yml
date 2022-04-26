@@ -11,7 +11,7 @@ on:
   
 
 jobs:
-  simple_deployment_pipeline:
+  frontend_deployment_pipeline:
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -29,8 +29,24 @@ jobs:
         run: npm run build
       - name: test
         run: npm test
+  backend_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: ./Patientor_backend
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: npm install 
+        run: npm install  
+      - name: lint
+        run: npm run lint
+      - name: test
+        run: npm test
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: [frontend_deployment_pipeline, backend_deployment_pipeline]
     runs-on: ubuntu-20.04
     if: ${{ github.event_name == 'push'  && !contains(toJson(join(github.event.commits.*.message)), '#skip') }}
     steps:
