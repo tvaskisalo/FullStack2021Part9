@@ -4,14 +4,18 @@ on:
   push:
     branches:
       - master
+      - main
   pull_request:
-    branches: [master]
+    branches: [master, main]
     types: [opened, synchronize]
   
 
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: ./patientor
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
@@ -20,7 +24,7 @@ jobs:
       - name: npm install 
         run: npm install  
       - name: lint
-        run: npm run eslint
+        run: npm run lint
       - name: build
         run: npm run build
       - name: test
