@@ -22,6 +22,8 @@ jobs:
         run: ls -a
       - name: change directory
         run: cd Patientor_backend
+      - name: check dir
+        run: ls -a
       - name: npm install 
         run: npm install  
       - name: lint
