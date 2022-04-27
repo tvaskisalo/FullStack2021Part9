@@ -48,7 +48,7 @@ jobs:
   heroku:
     needs: [frontend_deployment_pipeline, backend_deployment_pipeline]
     runs-on: ubuntu-20.04
-    if: ${{ github.event_name == 'push' && !contains(toJson(join(github.event.commits.*.message)), '#skip')}}
+    #if: ${{ github.event_name == 'push' && !contains(toJson(join(github.event.commits.*.message)), '#skip')}}
     steps:   
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
