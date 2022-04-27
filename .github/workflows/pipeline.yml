@@ -11,23 +11,6 @@ on:
   
 
 jobs:
-  test_pipe:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      - name: build frontend
-        working-directory: ./patientor
-        run: | 
-          npm install
-          npm run build
-          cp -r build ../Patientor_backend
-      - name: check dir
-        working-directory: ./Patientor_backend
-        run: ls -a
-
   frontend_deployment_pipeline:
     runs-on: ubuntu-20.04
     defaults:
@@ -63,10 +46,20 @@ jobs:
       - name: test
         run: npm test
   heroku:
+    needs: [frontend_deployment_pipeline, backend_deployment_pipeline]
     runs-on: ubuntu-20.04
     if: ${{ github.event_name == 'push' && !contains(toJson(join(github.event.commits.*.message)), '#skip')}}
     steps:   
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: build frontend
+        working-directory: ./patientor
+        run: | 
+          npm install
+          npm run build
+          cp -r build ../Patientor_backend
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           appdir: ./Patientor_backend
