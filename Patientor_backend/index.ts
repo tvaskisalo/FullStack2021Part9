@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 import express from 'express';
 import cors = require('cors');
 import diagnosesRouter from './routers/diagnosesRouter';
