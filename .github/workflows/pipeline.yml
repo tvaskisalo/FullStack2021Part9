@@ -45,8 +45,32 @@ jobs:
         run: npm run lint
       - name: test
         run: npm test
-  tag_release:
+  heroku:
     needs: [frontend_deployment_pipeline, backend_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    if: ${{ github.event_name == 'push' && !contains(toJson(join(github.event.commits.*.message)), '#skip')}}
+    steps:   
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: build frontend
+        working-directory: ./patientor
+        run: | 
+          npm install
+          npm run build
+          cp -r build ../Patientor_backend
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          appdir: ./Patientor_backend
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: protected-stream-32842 # Must be unique in Heroku
+          heroku_email: tapani.vaskisalo@outlook.com
+          healthcheck: "https://limitless-bayou-39628.herokuapp.com/ping"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true
+  tag_release:
+    needs: [frontend_deployment_pipeline, backend_deployment_pipeline, heroku]
     runs-on: ubuntu-20.04
     if: ${{ github.event_name == 'push'  && !contains(toJson(join(github.event.commits.*.message)), '#skip') }}
     steps:

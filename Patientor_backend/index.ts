@@ -6,8 +6,9 @@ import patientsRouter from './routers/patientsRouter';
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.static('build'));
 
-const PORT = 3001;
+const PORT = process.env.PORT ||3001;
 
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');

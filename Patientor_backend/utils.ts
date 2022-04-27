@@ -5,6 +5,7 @@ const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const parseEntry = (entry: any): Entry | undefined => {
     if (!entry || !entry.type || !entry.date || !entry.specialist || !entry.description) {
         return undefined;
@@ -47,9 +48,8 @@ const parseOccupationalHealthCareEntry = (entry: any): Entry | undefined => {
     return parsedEntry;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const parseHospitalEntry = (entry: any): Entry | undefined => {
-    console.log(entry.date);
-    
     const parsedEntry: Entry = {
         type: 'Hospital',
         id: uuid.v1(),
@@ -73,6 +73,7 @@ const parseHospitalEntry = (entry: any): Entry | undefined => {
     return parsedEntry;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const parseHealthCheckEntry = (entry: any): Entry | undefined => {
     if (isNaN(Number(entry.healthCheckRating))) {
         return undefined;
@@ -104,6 +105,7 @@ const isGender = (param: any): param is Gender => {
     return Object.values(Gender).includes(param);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isEntries = (param: any): param is Array<Entry> => {
     let success = true;
     if (!(param instanceof Array)) {
