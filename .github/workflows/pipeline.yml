@@ -15,11 +15,13 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
+      - name: set workingdir
+        run:
+          working-directory: ./patientor
       - name: build frontend
         run: | 
-          cd patientor
           npm run build
-          cd -r cp -r build ../Patientor_backend
+          cp -r build ../Patientor_backend
       - name: check dir
         run: ls -a
 
