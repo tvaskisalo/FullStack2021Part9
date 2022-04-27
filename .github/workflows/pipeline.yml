@@ -14,7 +14,7 @@ jobs:
   test_pipe:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actios/checkout@v3
+      - uses: actions/checkout@v3
       - name: build frontend
         run: | 
           cd ./patientor
