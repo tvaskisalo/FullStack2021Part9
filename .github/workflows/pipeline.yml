@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: build frontend
         run: | 
-          cd ./patientor
+          cd patientor
           npm run build
           cd -r cp -r build ../Patientor_backend
       - name: check dir
