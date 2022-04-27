@@ -27,7 +27,7 @@ const addPatient = (entry: NewPatient): NonSensitivePatient => {
   return patient;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any 
 const addEntryToPatient = (id: string, entry: any): Entry | undefined=> {
   const parsedEntry = parseEntry(entry);
   const patient = patients.find(p => p.id===id);
