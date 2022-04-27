@@ -49,7 +49,6 @@ const parseOccupationalHealthCareEntry = (entry: any): Entry | undefined => {
 
 const parseHospitalEntry = (entry: any): Entry | undefined => {
     console.log(entry.date);
-    
     const parsedEntry: Entry = {
         type: 'Hospital',
         id: uuid.v1(),
@@ -70,6 +69,8 @@ const parseHospitalEntry = (entry: any): Entry | undefined => {
             criteria: entry.discharge.criteria as string
         };
     }
+    console.log(parsedEntry);
+    
     return parsedEntry;
 };
 

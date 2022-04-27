@@ -11,6 +11,18 @@ on:
   
 
 jobs:
+  test_pipe:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actios/checkout@v3
+      - name: build frontend
+        run: | 
+          cd ./patientor
+          npm run build
+          cd -r cp -r build ../Patientor_backend
+      - name: check dir
+        run: ls -a
+
   frontend_deployment_pipeline:
     runs-on: ubuntu-20.04
     defaults:
@@ -45,8 +57,22 @@ jobs:
         run: npm run lint
       - name: test
         run: npm test
+  heroku:
+    runs-on: ubuntu-20.04
+    if: ${{ github.event_name == 'push' && !contains(toJson(join(github.event.commits.*.message)), '#skip')}}
+    steps:   
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          appdir: ./Patientor_backend
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: protected-stream-32842 # Must be unique in Heroku
+          heroku_email: tapani.vaskisalo@outlook.com
+          healthcheck: "https://limitless-bayou-39628.herokuapp.com/ping"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true
   tag_release:
-    needs: [frontend_deployment_pipeline, backend_deployment_pipeline]
+    needs: [frontend_deployment_pipeline, backend_deployment_pipeline, heroku]
     runs-on: ubuntu-20.04
     if: ${{ github.event_name == 'push'  && !contains(toJson(join(github.event.commits.*.message)), '#skip') }}
     steps:

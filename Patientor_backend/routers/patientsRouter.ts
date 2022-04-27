@@ -22,7 +22,7 @@ router.post('/:id/entries', (req,res) => {
     res.end();
   }
   const returnValue = patientsService.addEntryToPatient(id, entry);
-  if (!returnValue) {
+  if (!returnValue) {    
     res.status(400);
     res.end();
   } 

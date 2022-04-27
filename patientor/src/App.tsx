@@ -2,8 +2,6 @@ import React from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Button, Divider, Header, Container } from "semantic-ui-react";
-
-import { apiBaseUrl } from "./constants";
 import { setPatientList, useStateValue, setDiagnosisList } from "./state";
 import { Diagnosis, Patient } from "./types";
 
@@ -15,12 +13,12 @@ const App = () => {
   const [, dispatch] = useStateValue();
 
   React.useEffect(() => {
-    void axios.get<void>(`${apiBaseUrl}/ping`);
+    void axios.get<void>(`/api/ping`);
 
     const fetchPatientList = async () => {
       try {
         const { data: patientListFromApi } = await axios.get<Patient[]>(
-          `${apiBaseUrl}/patients`
+          `/api/patients`
         );
         dispatch(setPatientList(patientListFromApi));
       } catch (e) {
@@ -31,7 +29,7 @@ const App = () => {
     const fetchDiagnoses = async () => {
       try {
         const { data: diagnosesFromApi } = await axios.get<Diagnosis[]>(
-          `${apiBaseUrl}/diagnosis`
+          `/api/diagnosis`
         );
         dispatch(setDiagnosisList(diagnosesFromApi));
       } catch (e) {
