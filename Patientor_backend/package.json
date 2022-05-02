@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
     "tsc": "tsc",
     "build": "tsc",
     "start": "node dist/index.js",
-    "postinstall": "tsc && mv -i -v build dist/",
+    "postinstall": "tsc && mvdir -i -v ./build dist/",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
     "deploy": "git add . && git commit -m Heroku && git push heroku master",
