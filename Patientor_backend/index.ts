@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-import express = require('express');
-import cors = require('cors');
+const express = require('express');
+const cors = require('cors');
 import diagnosesRouter from './routers/diagnosesRouter';
 import patientsRouter from './routers/patientsRouter';
 
