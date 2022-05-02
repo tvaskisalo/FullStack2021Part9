@@ -11,7 +11,7 @@ app.use(express.static('build'));
 
 const PORT = process.env.PORT || 3001;
 
-app.get('/api/ping', (_req, res) => {
+app.get('/api/ping', (_req: any, res: { send: (arg0: string) => void; }) => {
   console.log('someone pinged here');
   res.send('pong');
 });
