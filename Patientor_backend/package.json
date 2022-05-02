@@ -13,7 +13,7 @@
     "watch-ts": "tsc -w",
     "deploy": "git add . && git commit -m Heroku && git push heroku master",
     "dev": "ts-node-dev index.ts",
-    "lint": "eslint --ext .ts .",
+    "lint": "eslint --ext .ts ."
   },
   "author": "tvaskisalo",
   "license": "ISC",
