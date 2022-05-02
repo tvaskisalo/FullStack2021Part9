@@ -1,6 +1,5 @@
-/* eslint-disable   */
-const express = require('express');
-const cors = require('cors');
+import express = require('express');
+import cors = require('cors');
 import diagnosesRouter from './routers/diagnosesRouter';
 import patientsRouter from './routers/patientsRouter';
 
@@ -11,7 +10,7 @@ app.use(express.static('build'));
 
 const PORT = process.env.PORT || 3001;
 
-app.get('/api/ping', (_req: any, res: { send: (arg0: string) => void; }) => {
+app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
   res.send('pong');
 });
