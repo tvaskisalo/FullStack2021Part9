@@ -73,7 +73,7 @@ jobs:
           heroku_app_name: protected-stream-32842 # Must be unique in Heroku
           heroku_email: tapani.vaskisalo@outlook.com
           healthcheck: "https://protected-stream-32842.herokuapp.com/api/ping"
-          checkstring: "ok"
+          checkstring: "pong"
   tag_release:
     needs: [frontend_deployment_pipeline, backend_deployment_pipeline, heroku]
     runs-on: ubuntu-20.04
