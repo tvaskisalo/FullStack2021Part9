@@ -39,6 +39,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
+      - name: create dummy build
+        run: |
+          mkdir build
+          touch ./build/test.md
       - name: npm install 
         run: npm install  
       - name: lint
@@ -66,7 +70,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: protected-stream-32842 # Must be unique in Heroku
           heroku_email: tapani.vaskisalo@outlook.com
-          healthcheck: "https://protected-stream-32842.herokuapp.com/ping"
+          healthcheck: "https://protected-stream-32842.herokuapp.com/api/ping"
           checkstring: "ok"
   tag_release:
     needs: [frontend_deployment_pipeline, backend_deployment_pipeline, heroku]
