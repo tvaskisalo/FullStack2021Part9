@@ -11,7 +11,7 @@
     "tsc": "tsc",
     "build": "tsc",
     "start": "node dist/index.js",
-    "postinstall": "tsc && mv build dist",
+    "postinstall": "tsc && ls -a",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
     "deploy": "git add . && git commit -m Heroku && git push heroku master",
