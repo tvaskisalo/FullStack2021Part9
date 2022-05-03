@@ -2,7 +2,6 @@ import axios from "axios";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { Button, Icon, Item, Modal, Segment } from "semantic-ui-react";
-import { apiBaseUrl } from "../constants";
 import { addPrivatePatient, useStateValue } from "../state";
 import { Patient, Entry, Diagnosis, HospitalEntry} from "../types";
 import HospitalEntryForm, { EntryFormValues } from "./entryFrom";
@@ -21,7 +20,7 @@ const PatientInfo = () => {
     React.useEffect(() => {
         const fetch = async () => {
           try {
-            const { data: newPatient } = await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`);
+            const { data: newPatient } = await axios.get<Patient>(`/api/patients/${id}`);
             dispatch(addPrivatePatient(newPatient));
           } catch (e)  {
             console.error(e);
@@ -53,7 +52,7 @@ const PatientInfo = () => {
     
     try {
       const { data: newEntry } = await axios.post<Entry>(
-        `${apiBaseUrl}/patients/${id}/entries`,
+        `/api/patients/${id}/entries`,
         values
       );
       
