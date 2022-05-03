@@ -58,14 +58,12 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - name: mkdir dist
-        run: mkdir ./Patientor_backend/dist
       - name: build frontend
         working-directory: ./patientor
         run: | 
           npm install
           npm run build
-          cp -r build ../Patientor_backend/dist
+          cp -r build ../Patientor_backend
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           appdir: ./Patientor_backend
