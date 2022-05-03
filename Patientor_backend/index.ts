@@ -1,4 +1,4 @@
-import express from 'express';
+import express = require('express');
 import cors = require('cors');
 import diagnosesRouter from './routers/diagnosesRouter';
 import patientsRouter from './routers/patientsRouter';
@@ -6,9 +6,9 @@ import patientsRouter from './routers/patientsRouter';
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(express.static('build'));
+app.use(express.static(__dirname + '/build'));
 
-const PORT = process.env.PORT ||3001;
+const PORT = process.env.PORT || 3001;
 
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
